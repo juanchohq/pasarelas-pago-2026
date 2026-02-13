@@ -1,598 +1,555 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
     <head>
         <meta charset="UTF-8" />
-        <title>Informe Pasarelas de Pago Chile 2026</title>
-        <meta
-            name="description"
-            content="Análisis comparativo de pasarelas de pago en Chile 2026: comisiones, tiempos de abono, tecnología y casos de uso para emprendedores, empresas y alto volumen."
-        />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-        <!-- Open Graph / Social -->
-        <meta
-            property="og:title"
-            content="Informe Pasarelas de Pago Chile 2026"
-        />
-        <meta
-            property="og:description"
-            content="Comparativa completa de pasarelas de pago en Chile: Webpay, GetNet, Flow, Mercado Pago, Fintoc y más."
-        />
-        <meta property="og:type" content="website" />
-
-        <!-- Tailwind CDN -->
+        <title>Ecosistema de Pagos Chile 2026</title>
         <script src="https://cdn.tailwindcss.com"></script>
-
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
         <style>
             body {
-                font-family:
-                    system-ui,
-                    -apple-system,
-                    BlinkMacSystemFont,
-                    "SF Pro Text",
-                    "Helvetica Neue",
-                    Arial,
-                    sans-serif;
+                font-family: "Inter", sans-serif;
+                background-color: #f5f5f7;
+                /* Apple-like light gray */
+                color: #1d1d1f;
+                /* Deep Black */
+                overflow-x: hidden;
             }
-            .gradient-bg {
-                background:
-                    radial-gradient(
-                        circle at top left,
-                        rgba(96, 165, 250, 0.25),
-                        transparent 50%
-                    ),
-                    radial-gradient(
-                        circle at top right,
-                        rgba(56, 189, 248, 0.2),
-                        transparent 55%
-                    ),
-                    radial-gradient(
-                        circle at bottom,
-                        rgba(45, 212, 191, 0.2),
-                        transparent 55%
-                    ),
-                    #020617;
+
+            /* Antigravity Aesthetics */
+            .glass-card {
+                background: rgba(255, 255, 255, 0.8);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
             }
-            .glass {
-                background: rgba(15, 23, 42, 0.85);
-                border: 1px solid rgba(148, 163, 184, 0.3);
-                box-shadow: 0 24px 80px rgba(15, 23, 42, 0.8);
-                backdrop-filter: blur(22px);
+
+            .glass-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+                transition: all 0.3s ease;
             }
-            .stat-card {
-                background: linear-gradient(
-                    145deg,
-                    rgba(148, 163, 184, 0.12),
-                    rgba(15, 23, 42, 0.9)
-                );
-                border: 1px solid rgba(148, 163, 184, 0.35);
-                box-shadow: 0 18px 60px rgba(15, 23, 42, 0.9);
+
+            /* Scroll Reveal Animation */
+            .reveal {
+                opacity: 0;
+                transform: translateY(30px);
+                transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
             }
-            .pill {
-                background: linear-gradient(
-                    135deg,
-                    rgba(96, 165, 250, 0.18),
-                    rgba(45, 212, 191, 0.16)
-                );
-                border: 1px solid rgba(129, 140, 248, 0.5);
-                box-shadow: 0 8px 30px rgba(56, 189, 248, 0.4);
+
+            .reveal.active {
+                opacity: 1;
+                transform: translateY(0);
             }
-            .glow {
-                box-shadow:
-                    0 0 0 1px rgba(148, 163, 184, 0.6),
-                    0 0 120px rgba(96, 165, 250, 0.55);
+
+            /* Gradient Text */
+            .text-gradient {
+                background: linear-gradient(135deg, #007aff 0%, #00c7be 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
             }
-            .timeline-dot {
-                box-shadow:
-                    0 0 0 1px rgba(148, 163, 184, 0.7),
-                    0 0 40px rgba(96, 165, 250, 0.7);
+
+            /* Button Gradient */
+            .btn-gradient {
+                background: linear-gradient(90deg, #007aff 0%, #0056b3 100%);
+                transition: all 0.3s ease;
             }
-            .radial-spot {
-                background: radial-gradient(
-                    circle,
-                    rgba(56, 189, 248, 0.18) 0,
-                    transparent 55%
-                );
+
+            .btn-gradient:hover {
+                box-shadow: 0 0 20px rgba(0, 122, 255, 0.4);
+                transform: scale(1.02);
+            }
+
+            #canvas-container {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+                opacity: 0.6;
+            }
+
+            /* Custom Scrollbar */
+            ::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: #f1f1f1;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: #c1c1c1;
+                border-radius: 4px;
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: #a8a8a8;
             }
         </style>
     </head>
-    <body class="bg-slate-950 text-slate-100">
-        <!-- Hero -->
-        <header class="gradient-bg text-white">
-            <div class="max-w-6xl mx-auto px-4 py-10 sm:py-16 lg:py-20">
-                <div
-                    class="flex flex-col lg:flex-row items-center gap-10 lg:gap-16"
+
+    <body class="antialiased selection:bg-blue-100 selection:text-blue-900">
+        <!-- Hero Section -->
+        <section
+            class="relative h-screen flex flex-col justify-center items-center overflow-hidden px-4"
+        >
+            <div id="canvas-container"></div>
+
+            <div class="z-10 text-center max-w-4xl mx-auto reveal">
+                <span
+                    class="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-600 text-sm font-medium mb-6 animate-pulse"
                 >
-                    <!-- Left content -->
-                    <div class="flex-1">
-                        <div
-                            class="inline-flex items-center space-x-3 pill px-4 py-1.5 rounded-full mb-6"
-                        >
-                            <span
-                                class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"
-                            ></span>
-                            <p
-                                class="text-xs sm:text-sm text-slate-100 font-medium tracking-wide"
-                            >
-                                Informe comparativo actualizado · Chile 2026
-                            </p>
-                        </div>
-
-                        <h1
-                            class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4"
-                        >
-                            El nuevo mapa de las pasarelas de pago en Chile
-                        </h1>
-
-                        <p
-                            class="text-slate-300 text-base sm:text-lg mb-8 max-w-xl"
-                        >
-                            Análisis comparativo de comisiones, tiempos de
-                            abono, tecnología y regulación en la nueva era
-                            financiera.
-                        </p>
-
-                        <div
-                            class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8"
-                        >
-                            <a
-                                href="informe-pasarelas-v5.pdf"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="inline-flex items-center justify-center bg-white text-slate-900 hover:bg-slate-100 font-semibold py-2.5 px-5 rounded-full text-sm sm:text-base transition-transform transform hover:-translate-y-0.5"
-                            >
-                                Descargar Informe V5
-                                <svg
-                                    class="w-4 h-4 ml-2"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M7 10l5 5m0 0l5-5m-5 5V3"
-                                    ></path>
-                                </svg>
-                            </a>
-                            <p class="text-xs sm:text-sm text-slate-400">
-                                70+ páginas de análisis práctico, tablas
-                                comparativas y recomendaciones por tipo de
-                                negocio.
-                            </p>
-                        </div>
-
-                        <div
-                            class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-xl"
-                        >
-                            <div class="stat-card rounded-2xl p-4">
-                                <p
-                                    class="text-xs uppercase tracking-wide text-slate-400 mb-1"
-                                >
-                                    Chile #1 en LatAm
-                                </p>
-                                <p class="text-2xl font-bold">374</p>
-                                <p class="text-xs text-slate-400 mt-1">
-                                    Transacciones digitales por persona al año.
-                                </p>
-                            </div>
-                            <div class="stat-card rounded-2xl p-4">
-                                <p
-                                    class="text-xs uppercase tracking-wide text-slate-400 mb-1"
-                                >
-                                    A2A vs Tarjetas
-                                </p>
-                                <p class="text-2xl font-bold">−60%</p>
-                                <p class="text-xs text-slate-400 mt-1">
-                                    Pagos A2A son hasta 60% más económicos que
-                                    las tarjetas tradicionales.
-                                </p>
-                            </div>
-                            <div class="stat-card rounded-2xl p-4">
-                                <p
-                                    class="text-xs uppercase tracking-wide text-slate-400 mb-1"
-                                >
-                                    Nuevos actores
-                                </p>
-                                <p class="text-2xl font-bold">+10</p>
-                                <p class="text-xs text-slate-400 mt-1">
-                                    La entrada de nuevos actores como Itaú y
-                                    Klap redefine el escenario competitivo.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Right content: highlight box -->
-                    <div class="flex-1 w-full lg:w-auto">
-                        <div class="relative">
-                            <div
-                                class="absolute -top-10 -left-10 w-40 h-40 radial-spot blur-3xl opacity-70"
-                            ></div>
-                            <div
-                                class="absolute -bottom-12 -right-4 w-44 h-44 radial-spot blur-3xl opacity-40"
-                            ></div>
-
-                            <div
-                                class="glass glow rounded-3xl p-5 sm:p-6 lg:p-7 relative overflow-hidden"
-                            >
-                                <div
-                                    class="flex items-center justify-between mb-4"
-                                >
-                                    <div>
-                                        <p class="text-xs text-slate-400">
-                                            Visión ejecutiva
-                                        </p>
-                                        <p class="text-sm font-semibold">
-                                            Transparencia total para decisiones
-                                            inteligentes.
-                                        </p>
-                                    </div>
-                                    <span
-                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/15 text-emerald-300 border border-emerald-400/40"
-                                    >
-                                        Actualizado 2026
-                                    </span>
-                                </div>
-
-                                <div class="space-y-4">
-                                    <div
-                                        class="border border-slate-700/70 rounded-2xl p-4"
-                                    >
-                                        <p
-                                            class="text-xs uppercase tracking-wide text-slate-400 mb-2"
-                                        >
-                                            Top pasarelas
-                                        </p>
-                                        <div
-                                            class="grid grid-cols-3 gap-2 text-xs"
-                                        >
-                                            <div>
-                                                <p class="text-slate-400">
-                                                    Flow
-                                                </p>
-                                                <p class="font-semibold">
-                                                    Emprendedores
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <p class="text-slate-400">
-                                                    Webpay + Fintoc
-                                                </p>
-                                                <p class="font-semibold">
-                                                    Alto volumen
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <p class="text-slate-400">
-                                                    Fintoc
-                                                </p>
-                                                <p class="font-semibold">
-                                                    Recurrencia
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div
-                                        class="border border-slate-700/70 rounded-2xl p-4"
-                                    >
-                                        <p
-                                            class="text-xs uppercase tracking-wide text-slate-400 mb-3"
-                                        >
-                                            Comparativa rápida
-                                        </p>
-                                        <div
-                                            class="grid grid-cols-3 text-xs text-slate-300 gap-1"
-                                        >
-                                            <span>Pasarela</span>
-                                            <span>Comisión</span>
-                                            <span>Abono</span>
-
-                                            <span
-                                                class="font-medium text-indigo-200"
-                                                >Fintoc</span
-                                            >
-                                            <span>0.2% - 0.9%</span>
-                                            <span>Instantáneo</span>
-
-                                            <span
-                                                class="font-medium text-indigo-200"
-                                                >GetNet</span
-                                            >
-                                            <span>0.8% prom.</span>
-                                            <span>Mismo día</span>
-
-                                            <span
-                                                class="font-medium text-indigo-200"
-                                                >Webpay Plus</span
-                                            >
-                                            <span>~1.4%</span>
-                                            <span>24-48 horas</span>
-
-                                            <span
-                                                class="font-medium text-indigo-200"
-                                                >Mercado Pago</span
-                                            >
-                                            <span>3.19% + IVA</span>
-                                            <span>Inmediato</span>
-
-                                            <span
-                                                class="font-medium text-indigo-200"
-                                                >PayPal</span
-                                            >
-                                            <span>~5.4%</span>
-                                            <span>Global</span>
-                                        </div>
-                                    </div>
-
-                                    <div
-                                        class="flex items-center justify-between pt-1"
-                                    >
-                                        <p
-                                            class="text-xs text-slate-400 max-w-[70%]"
-                                        >
-                                            Incluye análisis regulatorio,
-                                            tendencias 2026 y recomendaciones
-                                            específicas por rubro, tamaño y
-                                            modelo de negocio.
-                                        </p>
-                                        <span
-                                            class="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-400/60 flex items-center justify-center text-xs font-semibold text-emerald-200"
-                                        >
-                                            PRO
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div
-                                    class="absolute -top-16 -right-8 w-32 h-32 bg-emerald-400/20 rounded-full blur-3xl opacity-60"
-                                ></div>
-                                <div
-                                    class="absolute -bottom-20 -left-12 w-40 h-40 bg-sky-500/20 rounded-full blur-3xl opacity-60"
-                                ></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- Sección: Para quién es este informe -->
-        <section class="bg-slate-950 py-14 sm:py-16">
-            <div class="max-w-5xl mx-auto px-4">
-                <div class="mb-10">
-                    <h2 class="text-2xl sm:text-3xl font-bold mb-3">
-                        ¿Para quién es este informe?
-                    </h2>
-                    <p class="text-slate-300 text-sm sm:text-base max-w-2xl">
-                        Un mapa claro y accionable para quienes toman decisiones
-                        sobre cómo cobrar y optimizar costos de pago en Chile.
-                    </p>
-                </div>
-
-                <div class="grid md:grid-cols-3 gap-5">
-                    <div
-                        class="border border-slate-800 rounded-2xl p-5 bg-slate-900/40"
-                    >
-                        <h3 class="font-semibold mb-2">
-                            Emprendedores y pymes
-                        </h3>
-                        <p class="text-sm text-slate-300">
-                            Si recién estás validando tu modelo, necesitas
-                            cobros simples, sin costos fijos y con buena
-                            conversión en e-commerce y redes sociales.
-                        </p>
-                    </div>
-                    <div
-                        class="border border-slate-800 rounded-2xl p-5 bg-slate-900/40"
-                    >
-                        <h3 class="font-semibold mb-2">
-                            E-commerce en crecimiento
-                        </h3>
-                        <p class="text-sm text-slate-300">
-                            Tiendas que ya venden online y quieren reducir
-                            comisiones, mejorar tiempos de abono y diversificar
-                            medios de pago.
-                        </p>
-                    </div>
-                    <div
-                        class="border border-slate-800 rounded-2xl p-5 bg-slate-900/40"
-                    >
-                        <h3 class="font-semibold mb-2">
-                            SaaS, suscripciones y B2B
-                        </h3>
-                        <p class="text-sm text-slate-300">
-                            Empresas que requieren recurrencia, pagos cuenta a
-                            cuenta (A2A) y flujos de cobro más sofisticados, con
-                            baja fricción y control de riesgo.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Sección: Qué vas a encontrar -->
-        <section class="bg-slate-950 py-14 sm:py-16 border-y border-slate-900">
-            <div class="max-w-5xl mx-auto px-4">
-                <div class="flex flex-col md:flex-row md:items-start gap-8">
-                    <div class="md:w-1/2">
-                        <h2 class="text-2xl sm:text-3xl font-bold mb-3">
-                            Qué vas a encontrar en el informe
-                        </h2>
-                        <p class="text-slate-300 text-sm sm:text-base mb-5">
-                            Más que una lista de pasarelas, un mapa estratégico
-                            para elegir la combinación adecuada según tu
-                            realidad.
-                        </p>
-
-                        <ul class="space-y-3 text-sm text-slate-300">
-                            <li>
-                                ✔️ Comparativa detallada de comisiones, tiempos
-                                de abono y medios de pago soportados.
-                            </li>
-                            <li>
-                                ✔️ Evaluación de 20+ pasarelas: tradicionales,
-                                fintech, A2A, wallets y soluciones
-                                internacionales.
-                            </li>
-                            <li>
-                                ✔️ Análisis regulatorio y del ecosistema
-                                chileno: SBD, open finance y cambios
-                                competitivos.
-                            </li>
-                            <li>
-                                ✔️ Recomendaciones específicas según ticket
-                                promedio, volumen, vertical y stack tecnológico.
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="md:w-1/2">
-                        <div
-                            class="border border-slate-800 rounded-2xl p-5 bg-slate-900/40"
-                        >
-                            <p
-                                class="text-xs uppercase tracking-wide text-slate-400 mb-3"
-                            >
-                                Casos de uso clave
-                            </p>
-                            <div class="space-y-4 text-sm text-slate-300">
-                                <div>
-                                    <p class="font-semibold mb-1">
-                                        Perfil Emprendedor
-                                    </p>
-                                    <p>
-                                        Recomendación: Flow. Sin costos fijos y
-                                        fácil integración para validar tu
-                                        modelo.
-                                    </p>
-                                </div>
-                                <div>
-                                    <p class="font-semibold mb-1">
-                                        Alto Volumen
-                                    </p>
-                                    <p>
-                                        Recomendación: Mix Webpay + Fintoc.
-                                        Maximiza la conversión y reduce costos
-                                        operativos.
-                                    </p>
-                                </div>
-                                <div>
-                                    <p class="font-semibold mb-1">
-                                        Recurrencia
-                                    </p>
-                                    <p>
-                                        Recomendación: Fintoc. Optimizado para
-                                        suscripciones y pagos recurrentes de
-                                        bajo costo.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <p class="text-xs text-slate-400 mt-3">
-                            Incluye tablas comparativas, gráficos explicativos y
-                            referencias a fuentes actualizadas a 2026.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Sección: Cómo se armó el informe -->
-        <section class="bg-slate-950 py-14 sm:py-16">
-            <div class="max-w-5xl mx-auto px-4">
-                <div class="mb-10">
-                    <h2 class="text-2xl sm:text-3xl font-bold mb-3">
-                        Cómo se armó este informe
-                    </h2>
-                    <p class="text-slate-300 text-sm sm:text-base max-w-2xl">
-                        Combinamos investigación de mercado, documentación
-                        oficial de pasarelas, pruebas prácticas y apoyo de
-                        inteligencia artificial para ordenar un ecosistema cada
-                        vez más complejo.
-                    </p>
-                </div>
-
-                <div class="grid md:grid-cols-3 gap-5 text-sm text-slate-300">
-                    <div
-                        class="border border-slate-800 rounded-2xl p-5 bg-slate-900/40"
-                    >
-                        <h3 class="font-semibold mb-2">
-                            1. Revisión de actores
-                        </h3>
-                        <p>
-                            Identificamos las principales pasarelas por cuota de
-                            mercado, tipo de solución y foco (emprendedor, pyme,
-                            enterprise).
-                        </p>
-                    </div>
-                    <div
-                        class="border border-slate-800 rounded-2xl p-5 bg-slate-900/40"
-                    >
-                        <h3 class="font-semibold mb-2">
-                            2. Comparativa técnica
-                        </h3>
-                        <p>
-                            Se analizaron comisiones, tiempos de abono, soporte
-                            a e-commerce, APIs, SDKs, métodos de pago y
-                            experiencia de integración.
-                        </p>
-                    </div>
-                    <div
-                        class="border border-slate-800 rounded-2xl p-5 bg-slate-900/40"
-                    >
-                        <h3 class="font-semibold mb-2">3. Escenarios reales</h3>
-                        <p>
-                            El informe incluye escenarios típicos (ticket bajo,
-                            alto volumen, B2B, internacionalización) con
-                            combinaciones recomendadas.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Sección: CTA final -->
-        <section class="bg-slate-950 py-14 sm:py-16 border-y border-slate-900">
-            <div class="max-w-3xl mx-auto px-4 text-center">
-                <h2 class="text-2xl sm:text-3xl font-bold mb-4">
-                    Evita decisiones caras con información incompleta
-                </h2>
-                <p class="text-slate-300 text-sm sm:text-base mb-6">
-                    Cambiar de pasarela, negociar comisiones o integrar una
-                    nueva solución de pagos puede ser muy costoso si te apoyas
-                    solo en la oferta comercial. Este informe te da una base
-                    técnica y estratégica para decidir con calma.
+                    Informe 2026
+                </span>
+                <h1
+                    class="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-tight"
+                >
+                    Ecosistema de Pagos <br />
+                    <span class="text-gradient">Chile 2026</span>
+                </h1>
+                <p
+                    class="text-xl md:text-2xl text-gray-500 font-light mb-10 max-w-2xl mx-auto"
+                >
+                    Análisis comparativo de comisiones, tecnología y regulación
+                    en la nueva era financiera.
                 </p>
                 <a
                     href="informe-pasarelas-v5.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="inline-flex items-center justify-center bg-white text-slate-900 hover:bg-slate-100 font-semibold py-2.5 px-5 rounded-full text-sm sm:text-base transition-transform transform hover:-translate-y-0.5"
+                    download
+                    class="btn-gradient text-white font-medium py-4 px-10 rounded-full text-lg shadow-lg inline-flex items-center gap-2 group"
                 >
                     Descargar Informe V5
                     <svg
-                        class="w-4 h-4 ml-2"
+                        xmlns="http://www.w3.org/2000/svg"
                         fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
                         viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                        class="w-5 h-5 group-hover:translate-y-1 transition-transform"
                     >
                         <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
-                            d="M7 10l5 5m0 0l5-5m-5 5V3"
-                        ></path>
+                            d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M12 12.75l-7.5-7.5M12 12.75l7.5-7.5M12 12.75V3"
+                        />
                     </svg>
                 </a>
-                <p class="text-xs text-slate-400 mt-3">
-                    Ideal para founders, CFOs, e-commerce managers, product
-                    owners y consultores que trabajan con pagos digitales en
-                    Chile.
-                </p>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div
+                class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-50"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-6 h-6"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                    />
+                </svg>
+            </div>
+        </section>
+
+        <!-- Key Metrics Section (Bento Grid) -->
+        <section class="py-24 px-4 max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold mb-12 text-center reveal">
+                Datos Clave del Mercado
+            </h2>
+
+            <div
+                class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[300px]"
+            >
+                <!-- Card 1: Chile lidera LatAm (Span 2 cols on desktop) -->
+                <div
+                    class="glass-card rounded-3xl p-8 md:col-span-2 flex flex-col justify-between reveal delay-100 bg-white border-none shadow-sm relative overflow-hidden group"
+                >
+                    <div
+                        class="absolute -right-20 -top-20 w-64 h-64 bg-blue-50 rounded-full opacity-50 group-hover:scale-110 transition-transform duration-700"
+                    ></div>
+                    <div>
+                        <h3
+                            class="text-gray-500 font-medium text-lg uppercase tracking-wider mb-2"
+                        >
+                            Liderazgo Regional
+                        </h3>
+                        <p class="text-5xl font-bold text-gray-900 mt-2">
+                            Chile #1 en LatAm
+                        </p>
+                    </div>
+                    <div class="mt-8">
+                        <p class="text-7xl font-bold text-blue-600 mb-2">374</p>
+                        <p class="text-xl text-gray-600">
+                            Transacciones digitales por persona al año.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 2: Ahorro Inteligente -->
+                <div
+                    class="glass-card rounded-3xl p-8 flex flex-col justify-center items-center text-center reveal delay-200 bg-gradient-to-br from-blue-600 to-blue-800 text-white shadow-lg"
+                >
+                    <div
+                        class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6 backdrop-blur-sm"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-8 h-8 text-white"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">Ahorro Inteligente</h3>
+                    <p class="text-blue-100">
+                        Pagos A2A son hasta
+                        <span class="font-bold text-white"
+                            >60% más económicos</span
+                        >
+                        que las tarjetas tradicional.
+                    </p>
+                </div>
+
+                <!-- Card 3: Tendencia 2026 -->
+                <div
+                    class="glass-card rounded-3xl p-8 md:col-span-3 flex flex-col md:flex-row items-center justify-between reveal delay-300 bg-white shadow-sm border border-gray-100"
+                >
+                    <div class="md:w-1/2 mb-6 md:mb-0">
+                        <span
+                            class="text-blue-600 font-semibold tracking-wide text-xs uppercase bg-blue-50 px-3 py-1 rounded-full"
+                            >Tendencia 2026</span
+                        >
+                        <h3 class="text-3xl font-bold mt-4 mb-2">
+                            Transbank Desregulado
+                        </h3>
+                        <p class="text-gray-600 text-lg">
+                            La entrada de nuevos actores como Itaú y Klap
+                            redefine el escenario competitivo.
+                        </p>
+                    </div>
+                    <div
+                        class="md:w-1/3 h-full flex items-center justify-center"
+                    >
+                        <!-- Abstract chart representation -->
+                        <div
+                            class="flex items-end gap-2 h-32 w-full justify-center"
+                        >
+                            <div
+                                class="w-8 bg-gray-200 rounded-t-lg h-1/4 animate-pulse"
+                            ></div>
+                            <div
+                                class="w-8 bg-gray-300 rounded-t-lg h-2/4 animate-pulse delay-75"
+                            ></div>
+                            <div
+                                class="w-8 bg-blue-200 rounded-t-lg h-3/4 animate-pulse delay-150"
+                            ></div>
+                            <div
+                                class="w-8 bg-blue-500 rounded-t-lg h-full animate-pulse delay-300"
+                            ></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparative Section -->
+        <section class="py-24 bg-white">
+            <div class="max-w-5xl mx-auto px-4">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-4xl font-bold mb-4">
+                        Comparativa de Comisiones
+                    </h2>
+                    <p class="text-gray-500">
+                        Transparencia total para decisiones inteligentes.
+                    </p>
+                </div>
+
+                <div class="overflow-x-auto reveal">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr>
+                                <th
+                                    class="p-4 border-b-2 border-gray-100 text-gray-400 font-medium text-sm"
+                                >
+                                    Pasarela
+                                </th>
+                                <th
+                                    class="p-4 border-b-2 border-gray-100 text-gray-400 font-medium text-sm"
+                                >
+                                    Comisión
+                                </th>
+                                <th
+                                    class="p-4 border-b-2 border-gray-100 text-gray-400 font-medium text-sm"
+                                >
+                                    Abono
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-lg">
+                            <tr
+                                class="group hover:bg-gray-50 transition-colors"
+                            >
+                                <td
+                                    class="p-6 border-b border-gray-100 font-semibold text-gray-900 flex items-center gap-3"
+                                >
+                                    <div
+                                        class="w-2 h-2 rounded-full bg-green-500"
+                                    ></div>
+                                    Fintoc
+                                </td>
+                                <td
+                                    class="p-6 border-b border-gray-100 text-green-600 font-bold"
+                                >
+                                    0.2% - 0.9%
+                                </td>
+                                <td
+                                    class="p-6 border-b border-gray-100 text-gray-500 text-sm"
+                                >
+                                    Instantáneo
+                                </td>
+                            </tr>
+                            <tr
+                                class="group hover:bg-gray-50 transition-colors"
+                            >
+                                <td
+                                    class="p-6 border-b border-gray-100 font-semibold text-gray-900 flex items-center gap-3"
+                                >
+                                    <div
+                                        class="w-2 h-2 rounded-full bg-blue-500"
+                                    ></div>
+                                    GetNet
+                                </td>
+                                <td
+                                    class="p-6 border-b border-gray-100 text-gray-800"
+                                >
+                                    0.8% prom.
+                                </td>
+                                <td
+                                    class="p-6 border-b border-gray-100 text-gray-500 text-sm"
+                                >
+                                    Mismo día
+                                </td>
+                            </tr>
+                            <tr
+                                class="group hover:bg-gray-50 transition-colors"
+                            >
+                                <td
+                                    class="p-6 border-b border-gray-100 font-semibold text-gray-900 flex items-center gap-3"
+                                >
+                                    <div
+                                        class="w-2 h-2 rounded-full bg-orange-500"
+                                    ></div>
+                                    Webpay Plus
+                                </td>
+                                <td
+                                    class="p-6 border-b border-gray-100 text-gray-800"
+                                >
+                                    ~1.4%
+                                </td>
+                                <td
+                                    class="p-6 border-b border-gray-100 text-gray-500 text-sm"
+                                >
+                                    24-48 horas
+                                </td>
+                            </tr>
+                            <tr
+                                class="group hover:bg-gray-50 transition-colors"
+                            >
+                                <td
+                                    class="p-6 border-b border-gray-100 font-semibold text-gray-900 flex items-center gap-3"
+                                >
+                                    <div
+                                        class="w-2 h-2 rounded-full bg-indigo-500"
+                                    ></div>
+                                    Mercado Pago
+                                </td>
+                                <td
+                                    class="p-6 border-b border-gray-100 text-gray-800"
+                                >
+                                    3.19% + IVA
+                                </td>
+                                <td
+                                    class="p-6 border-b border-gray-100 text-gray-500 text-sm"
+                                >
+                                    Inmediato
+                                </td>
+                            </tr>
+                            <tr
+                                class="group hover:bg-gray-50 transition-colors"
+                            >
+                                <td
+                                    class="p-6 border-b border-gray-100 font-semibold text-gray-900 flex items-center gap-3"
+                                >
+                                    <div
+                                        class="w-2 h-2 rounded-full bg-slate-400"
+                                    ></div>
+                                    PayPal
+                                </td>
+                                <td
+                                    class="p-6 border-b border-gray-100 text-gray-800"
+                                >
+                                    ~5.4%
+                                </td>
+                                <td
+                                    class="p-6 border-b border-gray-100 text-gray-500 text-sm"
+                                >
+                                    Global
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recommendations Section -->
+        <section class="py-24 px-4 bg-gray-50">
+            <h2 class="text-3xl font-bold mb-12 text-center reveal">
+                Nuestra Recomendación
+            </h2>
+
+            <div
+                class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8"
+            >
+                <!-- Rec 1 -->
+                <div
+                    class="glass-card bg-white p-8 rounded-3xl reveal hover:border-blue-200 border border-transparent"
+                >
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-6"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-6 h-6"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"
+                            />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Startup</h3>
+                    <p
+                        class="text-sm text-gray-500 mb-4 uppercase tracking-wider font-medium"
+                    >
+                        Perfil Emprendedor
+                    </p>
+                    <div class="my-6 border-t border-gray-100"></div>
+                    <p class="font-bold text-gray-900 mb-1">
+                        Recomendación: Flow
+                    </p>
+                    <p class="text-gray-600 text-sm">
+                        Sin costos fijos y fácil integración para validar tu
+                        modelo.
+                    </p>
+                </div>
+
+                <!-- Rec 2 -->
+                <div
+                    class="glass-card bg-white p-8 rounded-3xl reveal delay-100 border-2 border-blue-500 shadow-xl transform scale-105 z-10"
+                >
+                    <div
+                        class="absolute top-0 right-0 bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-2xl"
+                    >
+                        POPULAR
+                    </div>
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center mb-6"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-6 h-6"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+                            />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">E-commerce Grande</h3>
+                    <p
+                        class="text-sm text-gray-500 mb-4 uppercase tracking-wider font-medium"
+                    >
+                        Alto Volumen
+                    </p>
+                    <div class="my-6 border-t border-gray-100"></div>
+                    <p class="font-bold text-gray-900 mb-1">
+                        Recomendación: Mix
+                    </p>
+                    <p class="text-gray-600 text-sm">
+                        Webpay + Fintoc. Maximiza la conversión y reduce costos
+                        operativos.
+                    </p>
+                </div>
+
+                <!-- Rec 3 -->
+                <div
+                    class="glass-card bg-white p-8 rounded-3xl reveal delay-200 hover:border-blue-200 border border-transparent"
+                >
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center mb-6"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-6 h-6"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+                            />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">SaaS</h3>
+                    <p
+                        class="text-sm text-gray-500 mb-4 uppercase tracking-wider font-medium"
+                    >
+                        Recurrencia
+                    </p>
+                    <div class="my-6 border-t border-gray-100"></div>
+                    <p class="font-bold text-gray-900 mb-1">
+                        Recomendación: Fintoc
+                    </p>
+                    <p class="text-gray-600 text-sm">
+                        Optimizado para suscripciones y pagos recurrentes de
+                        bajo costo.
+                    </p>
+                </div>
             </div>
         </section>
 
@@ -604,8 +561,7 @@
                 </h3>
                 <a
                     href="informe-pasarelas-v5.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    download
                     class="inline-block bg-white text-gray-900 hover:bg-gray-200 font-bold py-3 px-8 rounded-full transition-colors mb-12"
                 >
                     Descargar PDF (v5)
@@ -618,5 +574,107 @@
                 </div>
             </div>
         </footer>
+
+        <script>
+            // Scroll Reveal Animation
+            function reveal() {
+                var reveals = document.querySelectorAll(".reveal");
+
+                for (var i = 0; i < reveals.length; i++) {
+                    var windowHeight = window.innerHeight;
+                    var elementTop = reveals.getBoundingClientRect().top;
+                    var elementVisible = 150;
+
+                    if (elementTop < windowHeight - elementVisible) {
+                        reveals.classList.add("active");
+                    }
+                }
+            }
+            window.addEventListener("scroll", reveal);
+            // Trigger once on load
+            reveal();
+
+            // Particle Animation Logic
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            document.getElementById("canvas-container").appendChild(canvas);
+
+            let width, height;
+            let particles = [];
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.vx = (Math.random() - 0.5) * 0.5;
+                    this.vy = (Math.random() - 0.5) * 0.5;
+                    this.size = Math.random() * 2 + 1;
+                }
+
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+
+                    if (this.x < 0 || this.x > width) this.vx *= -1;
+                    if (this.y < 0 || this.y > height) this.vy *= -1;
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = "#cbd5e1"; // Light gray-blue
+                    ctx.fill();
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                for (let i = 0; i < 50; i++) {
+                    particles.push(new Particle());
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+
+                particles.forEach((p, index) => {
+                    p.update();
+                    p.draw();
+
+                    // Draw connections
+                    for (let j = index + 1; j < particles.length; j++) {
+                        const p2 = particles;
+                        const dx = p.x - p2.x;
+                        const dy = p.y - p2.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+
+                        if (dist < 150) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = `rgba(203, 213, 225, ${1 - dist / 150})`;
+                            ctx.lineWidth = 1;
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.stroke();
+                        }
+                    }
+                });
+
+                requestAnimationFrame(animate);
+            }
+
+            window.addEventListener("resize", () => {
+                resize();
+                initParticles();
+            });
+
+            resize();
+            initParticles();
+            animate();
+        </script>
     </body>
 </html>
