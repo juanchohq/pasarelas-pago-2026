@@ -579,102 +579,116 @@
             // Scroll Reveal Animation
             function reveal() {
                 var reveals = document.querySelectorAll(".reveal");
+                var windowHeight = window.innerHeight;
 
                 for (var i = 0; i < reveals.length; i++) {
-                    var windowHeight = window.innerHeight;
                     var elementTop = reveals.getBoundingClientRect().top;
-                    var elementVisible = 150;
+                    var elementVisible = 50; // Reduced to ensure it triggers easier
 
                     if (elementTop < windowHeight - elementVisible) {
                         reveals.classList.add("active");
                     }
                 }
             }
+
+            // Trigger on potential loading events to ensure it catches the right moment
             window.addEventListener("scroll", reveal);
-            // Trigger once on load
+            window.addEventListener("load", reveal); // Critical for GitHub Pages/Tailwind CDN timing
+            document.addEventListener("DOMContentLoaded", reveal);
+
+            // Initial check
             reveal();
 
             // Particle Animation Logic
-            const canvas = document.createElement("canvas");
-            const ctx = canvas.getContext("2d");
-            document.getElementById("canvas-container").appendChild(canvas);
+            // Wrapped in a try-catch to prevent a canvas error from stopping other scripts
+            try {
+                const canvasContainer =
+                    document.getElementById("canvas-container");
+                if (canvasContainer) {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d");
+                    canvasContainer.appendChild(canvas);
 
-            let width, height;
-            let particles = [];
+                    let width, height;
+                    let particles = [];
 
-            function resize() {
-                width = canvas.width = window.innerWidth;
-                height = canvas.height = window.innerHeight;
-            }
+                    function resize() {
+                        width = canvas.width = window.innerWidth;
+                        height = canvas.height = window.innerHeight;
+                    }
 
-            class Particle {
-                constructor() {
-                    this.x = Math.random() * width;
-                    this.y = Math.random() * height;
-                    this.vx = (Math.random() - 0.5) * 0.5;
-                    this.vy = (Math.random() - 0.5) * 0.5;
-                    this.size = Math.random() * 2 + 1;
-                }
+                    class Particle {
+                        constructor() {
+                            this.x = Math.random() * width;
+                            this.y = Math.random() * height;
+                            this.vx = (Math.random() - 0.5) * 0.5;
+                            this.vy = (Math.random() - 0.5) * 0.5;
+                            this.size = Math.random() * 2 + 1;
+                        }
 
-                update() {
-                    this.x += this.vx;
-                    this.y += this.vy;
+                        update() {
+                            this.x += this.vx;
+                            this.y += this.vy;
 
-                    if (this.x < 0 || this.x > width) this.vx *= -1;
-                    if (this.y < 0 || this.y > height) this.vy *= -1;
-                }
+                            if (this.x < 0 || this.x > width) this.vx *= -1;
+                            if (this.y < 0 || this.y > height) this.vy *= -1;
+                        }
 
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fillStyle = "#cbd5e1"; // Light gray-blue
-                    ctx.fill();
-                }
-            }
-
-            function initParticles() {
-                particles = [];
-                for (let i = 0; i < 50; i++) {
-                    particles.push(new Particle());
-                }
-            }
-
-            function animate() {
-                ctx.clearRect(0, 0, width, height);
-
-                particles.forEach((p, index) => {
-                    p.update();
-                    p.draw();
-
-                    // Draw connections
-                    for (let j = index + 1; j < particles.length; j++) {
-                        const p2 = particles;
-                        const dx = p.x - p2.x;
-                        const dy = p.y - p2.y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-
-                        if (dist < 150) {
+                        draw() {
                             ctx.beginPath();
-                            ctx.strokeStyle = `rgba(203, 213, 225, ${1 - dist / 150})`;
-                            ctx.lineWidth = 1;
-                            ctx.moveTo(p.x, p.y);
-                            ctx.lineTo(p2.x, p2.y);
-                            ctx.stroke();
+                            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                            ctx.fillStyle = "#cbd5e1"; // Light gray-blue
+                            ctx.fill();
                         }
                     }
-                });
 
-                requestAnimationFrame(animate);
+                    function initParticles() {
+                        particles = [];
+                        for (let i = 0; i < 50; i++) {
+                            particles.push(new Particle());
+                        }
+                    }
+
+                    function animate() {
+                        ctx.clearRect(0, 0, width, height);
+
+                        particles.forEach((p, index) => {
+                            p.update();
+                            p.draw();
+
+                            // Draw connections
+                            for (let j = index + 1; j < particles.length; j++) {
+                                const p2 = particles;
+                                const dx = p.x - p2.x;
+                                const dy = p.y - p2.y;
+                                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                                if (dist < 150) {
+                                    ctx.beginPath();
+                                    ctx.strokeStyle = `rgba(203, 213, 225, ${1 - dist / 150})`;
+                                    ctx.lineWidth = 1;
+                                    ctx.moveTo(p.x, p.y);
+                                    ctx.lineTo(p2.x, p2.y);
+                                    ctx.stroke();
+                                }
+                            }
+                        });
+
+                        requestAnimationFrame(animate);
+                    }
+
+                    window.addEventListener("resize", () => {
+                        resize();
+                        initParticles();
+                    });
+
+                    resize();
+                    initParticles();
+                    animate();
+                }
+            } catch (e) {
+                console.error("Particle effect error:", e);
             }
-
-            window.addEventListener("resize", () => {
-                resize();
-                initParticles();
-            });
-
-            resize();
-            initParticles();
-            animate();
         </script>
     </body>
 </html>
