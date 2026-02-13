@@ -41,11 +41,22 @@
                 opacity: 0;
                 transform: translateY(30px);
                 transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+                /* Failsafe: Make visible if JS fails after 3s */
+                animation: failsafe-reveal 1s ease 3s forwards;
+            }
+
+            @keyframes failsafe-reveal {
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
 
             .reveal.active {
                 opacity: 1;
                 transform: translateY(0);
+                animation: none;
+                /* Disable failsafe if JS works */
             }
 
             /* Gradient Text */
